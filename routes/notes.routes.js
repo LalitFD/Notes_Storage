@@ -6,6 +6,7 @@ import {
     viewNote,
     getHistory,
     getAccount
+    , deleteNote
 } from '../controllers/notes.controller.js';
 
 const router = express.Router();
@@ -26,6 +27,8 @@ router.post('/upload', uploadNotes);
 router.get('/myNotes', getMyNotes);
 
 router.get('/view/:id', viewNote);
+
+router.get('/delete/:id', deleteNote);
 
 router.get('/history', getHistory);
 

@@ -72,51 +72,32 @@ export const getMyNotes = async (req, res) => {
 
 
 export const viewNote = async (req, res) => {
-    console.log('=== VIEW NOTE DEBUG ===');
-    console.log('Request URL:', req.url);
-    console.log('Note ID from params:', req.params.id);
-    console.log('Session data:', req.session);
-    console.log('User ID from session:', req.session.user?.id);
-    
+
     const noteId = req.params.id;
     const userId = req.session.user?.id;
-    
+
     if (!userId) {
         console.log('No user ID found, redirecting to login');
         return res.redirect('/log-in');
     }
 
     try {
-        console.log('Executing database query...');
         const query = 'SELECT * FROM notes WHERE id = ? AND user_id = ?';
         const [notes] = await db.execute(query, [noteId, userId]);
-        
-        console.log('Database query result:', notes);
-        console.log('Number of notes found:', notes.length);
 
         if (!notes.length) {
             console.log('No notes found for this user and ID');
             return res.status(404).render('error', { message: 'Note not found' });
         }
-
         const note = notes[0];
         console.log('Note details:', note);
-        
-        // Path handling
         const filePath = path.join(process.cwd(), 'public/uploads/notes', note.file_name);
-        console.log('Constructed file path:', filePath);
-        console.log('File exists check:', fs.existsSync(filePath));
 
         if (!fs.existsSync(filePath)) {
-            console.log('File does not exist at path:', filePath);
             return res.status(404).render('error', { message: 'File missing' });
         }
-
-        console.log('Sending file...');
         res.sendFile(filePath);
     } catch (err) {
-        console.error('ERROR in viewNote:', err);
-        console.error('Error stack:', err.stack);
         res.status(500).render('error', { message: 'Could not display note' });
     }
 };
@@ -139,7 +120,6 @@ export const getHistory = async (req, res) => {
 
         res.render('history', { notes, user: req.session.user });
     } catch (err) {
-        console.error('Error fetching history:', err);
         res.status(500).json({ error: 'Server error' });
     }
 };
@@ -180,6 +160,18 @@ export const getAccount = async (req, res) => {
     }
 };
 
+export const deleteNote = async (request, response) => {
+    try {
+        let id = parseInt(request.params.id)
+
+        let query = "delete from notes where id = ?"
+        const [notes] = await db.execute(query, [id]);
+        return response.redirect('/notes/myNotes');
+    } catch (err) {
+        console.log(err);
+        return response.status(500).json({ error: "Internal sever error" })
+    }
+}
 
 
 // export const updateAccount = async (req, res) => {

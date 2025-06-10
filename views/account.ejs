@@ -17,7 +17,8 @@
                 margin: 50px auto;
                 background: #fff;
                 border-radius: 12px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); */
+                box-shadow: 3px 3px 3px 3px gray;
                 padding: 30px;
                 text-align: center;
                 margin-bottom: 79px;
@@ -46,6 +47,31 @@
                 font-weight: bold;
                 color: #555;
             }
+/* 
+            .update-btn {
+                margin-top: 0px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                border: none;
+                color: #fff;
+                padding: 12px 30px;
+                border-radius: 8px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: transform 0.2s;
+                margin-left: 45%;
+            }
+
+            .update-btn:hover {
+                transform: translateY(-10px);
+            }
+
+            .update-form {
+                display: none;
+                margin-top: 30px;
+                text-align: left;
+                border-top: 1px solid #eee;
+                padding-top: 20px;
+            } */
         </style>
 </head>
 
@@ -74,6 +100,29 @@
                 <%= (user && user.notes)|| 0 %>
             </div>
         </div>
+
+        <!-- <button class="update-btn" onclick="updateAccount()">Update Account</button>
+
+        <div class="update-form" id="updateForm">
+            <form>
+                <div class="form-group">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" id="firstName" name="firstName" value="<%= user.firstname %>">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" id="lastName" name="lastName" value="<%= user.lastname %>">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="<%= user.email %>">
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="save-btn" onclick="saveChanges()">Save Changes</button>
+                    <button type="button" class="cancel-btn" onclick="cancelUpdate()">Cancel</button>
+                </div>
+            </form>
+        </div> -->
 
         <%- include("footer.ejs") %>
 </body>

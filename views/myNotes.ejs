@@ -182,9 +182,13 @@
                                 </p>
                             </div>
                             <div class="note-footer">
-                                <a href="/notes/view/<%= note.id %>" class="view-btn">
+                                <a href="/notes/view/<%= note.id %>" class="view-btn" style="text-decoration: none;">
                                     <i class="icon-view"></i> View Note
                                 </a>
+
+                                <a href="/notes/delete/<%= note.id %>" class="view-btn"
+                                    style="background-color:white;color: red;border: 2px solid red;margin-top: 5px; text-decoration: none;">Delete
+                                    Note</a>
                             </div>
                         </div>
                         <% } %>
@@ -195,7 +199,7 @@
                         <i class="icon-empty"></i>
                         <h4>No Notes Found</h4>
                         <p>You haven't uploaded any notes yet.</p>
-                        <a href="/notes/upload" class="upload-btn">
+                        <a href="/notes/upload" class="upload-btn" style="text-decoration: none;">
                             <i class="icon-upload"></i> Upload Your First Note
                         </a>
                     </div>

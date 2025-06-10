@@ -25,8 +25,7 @@ export const registerUser = async (req, res) => {
     res.redirect('/login?success=registered');
   } catch (err) {
     console.error('Registration error:', err);
-    res.status(500).render('register', {
-      error: 'Something went wrong. Try again.'
+    res.status(500).render('register',{error: 'Something went wrong. Try again.'
     });
   }
 };
