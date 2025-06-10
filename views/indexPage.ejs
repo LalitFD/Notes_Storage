@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notes-Application</title>
+    <%- include("__bootstrap.ejs")%>
+
+        <style>
+            body {
+                background-color: white;
+                font-family: 'Segoe UI', sans-serif;
+            }
+
+            .home-section {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 4em 6em;
+                flex-wrap: wrap;
+            }
+
+            .text-content {
+                width: 50%;
+                max-width: 600px;
+            }
+
+            .text-content h1 {
+                font-size: 2.5em;
+                color: #2c3e50;
+            }
+
+            
+            #typed-text {
+                font-size: 1.3em;
+                margin-top: 1em;
+                color: #444;
+                min-height: 80px;
+                font-weight: 500;
+                margin-left: 10px
+            }
+
+            .image-content img {
+                width: 30vw;
+                object-fit: cover;
+            }
+
+            @media (max-width: 768px) {
+                .home-section {
+                    flex-direction: column;
+                    text-align: center;
+                }
+
+                .text-content,
+                .image-content {
+                    width: 100%;
+                }
+
+                .image-content img {
+                    margin-left: 0;
+                }
+            }
+        </style>
+</head>
+
+<body>
+    <%- include("__header.ejs", { user: user }) %>
+
+        <section class="home-section">
+            <div class="text-content">
+                <h1>Welcome to <span style="color: #28bfa4;">NoteItDown</span></h1>
+                <p id="typed-text"></p>
+            </div>
+            <div class="image-content">
+                <img src="https://i.pinimg.com/736x/07/a7/95/07a795496de1c1780c17965bad10286c.jpg" alt="Notes Image">
+            </div>
+        </section>
+
+        <script>
+            const phrases = [
+                "Upload and organize your study notes.",
+                "Access notes anytime, anywhere.",
+                "Make your learning easy and efficient.",
+                "Share notes with classmates instantly."
+            ];
+
+            let index = 0;
+            let charIndex = 0;
+            let currentPhrase = '';
+            let isDeleting = false;
+
+            const typedText = document.getElementById("typed-text");
+
+            function type() {
+                if (index < phrases.length) {
+                    if (!isDeleting && charIndex <= phrases[index].length) {
+                        currentPhrase = phrases[index].substring(0, charIndex++);
+                        typedText.innerHTML = currentPhrase + "|";
+                    }
+
+                    if (isDeleting && charIndex > 0) {
+                        currentPhrase = phrases[index].substring(0, charIndex--);
+                        typedText.innerHTML = currentPhrase + "|";
+                    }
+
+                    if (!isDeleting && charIndex === phrases[index].length) {
+                        isDeleting = true;
+                        setTimeout(type, 1000);
+                        return;
+                    } else if (isDeleting && charIndex === 0) {
+                        isDeleting = false;
+                        index = (index + 1) % phrases.length;
+                    }
+
+                    setTimeout(type, isDeleting ? 50 : 100);
+                }
+            }
+
+            type();
+        </script>
+</body>
+
+</html>

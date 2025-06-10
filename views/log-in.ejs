@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log-in</title>
+
+  <style>
+    body {
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    #container {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+      padding: 30px;
+      border-radius: 10px;
+      background-color: white;
+    }
+
+    #head {
+      text-align: center;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .form-control {
+      height: 45px;
+      border-radius: 8px;
+      background-color: rgb(75, 76, 76);
+      color: white;
+      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-control::placeholder {
+      color: white;
+      letter-spacing: 1px;
+    }
+
+    #btn {
+      height: 45px;
+      width: 100%;
+      border: none;
+      border-radius: 20px;
+      background-color: #7C6A59;
+      color: white;
+      letter-spacing: 2px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    #reg {
+      display: block;
+      text-align: right;
+      margin-top: 15px;
+      color: #7C6A59;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    @media (max-width: 576px) {
+      #container {
+        margin: 20px;
+        padding: 20px;
+      }
+
+      #btn {
+        font-size: 14px;
+      }
+
+      #reg {
+        text-align: center;
+        margin-top: 10px;
+      }
+    }
+  </style>
+
+  <%- include("__bootstrap.ejs") %>
+</head>
+
+<body>
+  <div id="container">
+
+        <h4 id="head">Get Started Now</h4>
+        <form action="/login" method="POST">
+          <div class="form-group mb-3">
+            <input type="email" class="form-control" placeholder="Email" name="email" required />
+          </div>
+          <div class="form-group mb-3">
+            <input type="password" class="form-control" placeholder="Password" name="password" required />
+          </div>
+          <div class="form-group">
+            <button id="btn">Log In</button>
+          </div>
+        </form>
+        <a href="/register" id="reg">Create new account.</a>
+  </div>
+</body>
+
+</html>

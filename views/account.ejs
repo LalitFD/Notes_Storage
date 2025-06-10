@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - NoteItDown</title>
+    <%- include("__bootstrap.ejs") %>
+        <style>
+            body {
+                background: #f0f2f5;
+                font-family: 'Segoe UI', sans-serif;
+            }
+
+            .profile-container {
+                max-width: 500px;
+                margin: 50px auto;
+                background: #fff;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                padding: 30px;
+                text-align: center;
+                margin-bottom: 79px;
+            }
+
+            .avatar {
+                width: 80px;
+                height: 80px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #fff;
+                font-size: 28px;
+                margin: 0 auto 20px;
+            }
+
+            .info-item {
+                margin: 10px 0;
+                font-size: 16px;
+                color: #333;
+            }
+
+            .info-label {
+                font-weight: bold;
+                color: #555;
+            }
+        </style>
+</head>
+
+<body>
+    <%- include("__header.ejs") %>
+
+        <div class="profile-container">
+            <div class="avatar">
+                <%= user.firstname[0].toUpperCase() %>
+                    <%= user.lastname[0].toUpperCase() %>
+            </div>
+            <div class="info-item">
+                <span class="info-label">First Name:</span>
+                <%= user.firstname %>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Last Name:</span>
+                <%= user.lastname %>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Email:</span>
+                <%= user.email %>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Total Notes:</span>
+                <%= (user && user.notes)|| 0 %>
+            </div>
+        </div>
+
+        <%- include("footer.ejs") %>
+</body>
+
+</html>

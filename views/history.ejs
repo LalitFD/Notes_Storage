@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History - NoteItDown</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <%- include("__bootstrap.ejs")%>
+
+    <style>
+        body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+.page-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.page-title {
+  font-size: 26px;
+  color: #007bff;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: #6c757d;
+  margin-bottom: 30px;
+}
+
+.note-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.note-item {
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 16px 20px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: box-shadow 0.3s ease;
+}
+
+.note-item:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.note-title {
+  margin: 0 0 4px;
+  font-size: 18px;
+  color: #333;
+}
+
+.note-date {
+  margin: 0;
+  font-size: 14px;
+  color: #888;
+}
+
+.badge-recent {
+  background-color: #6c757d;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.no-notes {
+  padding: 40px 20px;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 6px;
+  color: #856404;
+  margin-top: 20px;
+}
+
+.no-notes h5 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.upload-link {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+.upload-link:hover {
+  text-decoration: underline;
+}
+
+    </style>
+</head>
+
+<body>
+    <%- include('__header.ejs') %>
+
+        <div class="page-container">
+            <h2 class="page-title">Recent History</h2>
+            <p class="subtitle">Your last 5 uploaded notes</p>
+
+            <% if (notes && notes.length> 0) { %>
+                <div class="note-list">
+                    <% notes.forEach(note=> { %>
+                        <div class="note-item">
+                            <div class="note-details">
+                                <h4 class="note-title">
+                                    <%= note.title %>
+                                </h4>
+                                <p class="note-date">Uploaded: <%= new Date(note.upload_date).toLocaleDateString('en-IN')
+                                        %>
+                                </p>
+                            </div>
+                            <span class="badge-recent">Recent</span>
+                        </div>
+                        <% }) %>
+                </div>
+                <% } else { %>
+                    <div class="no-notes">
+                        <h5>No Notes Found</h5>
+                        <p>You haven't uploaded any notes yet.
+                            <a href="/upload-notes" class="upload-link">Upload your first note!</a>
+                        </p>
+                    </div>
+                    <% } %>
+        </div>
+
+
+
+</body>
+
+</html>

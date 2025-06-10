@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Your Notes</title>
+    <%- include("__bootstrap.ejs") %>
+    <style>
+        body {
+            background-color: #fefbf1;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #up {
+            max-width: 600px;
+            margin: 5% auto;
+            padding: 30px;
+            background-color: #fffbe7;
+            border: 2px dashed #999;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        #up img {
+            width: 40%;
+
+            max-width: 200px;
+            cursor: pointer;
+               /* mix-blend-mode: color-burn; */
+            margin: 15px auto;
+            display: block;
+            background-color: #FFFBE7;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        #para {
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            width: 100%;
+            text-align: left;
+        }
+
+        #title {
+            font-weight: 600;
+            font-size: 16px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        #titleinput {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .submit-btn {
+            padding: 10px 25px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {33333333333333333333333333333333333
+            background-color: #3e9143;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include("__header.ejs") %>
+
+    <div id="up">
+        <form class="upload-form" action="/notes/upload" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title" id="title">Note Title:</label>
+                <input type="text" id="titleinput" name="title" required>
+
+            </div>
+
+            <input type="file" id="fileInput" name="notesFile" required />
+
+            <img src="https://i.pinimg.com/736x/5b/84/36/5b8436f9113ec797bf31676c43ff5264.jpg" alt="Upload"
+                id="uploadImage" />
+
+            <p id="para">Upload Your Document</p>
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("uploadImage").addEventListener("click", function () {
+            document.getElementById("fileInput").click();
+        });
+
+        document.getElementById("fileInput").addEventListener("change", function () {
+            if (this.files.length > 0) {
+                document.getElementById("para").textContent = this.files[0].name;
+            }
+        });
+    </script>
+</body>
+
+</html>

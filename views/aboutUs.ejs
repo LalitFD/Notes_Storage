@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes-Application</title>
+    <%- include("__bootstrap.ejs") %>
+        <style>
+            body {
+                font-family: 'Segoe UI', sans-serif;
+                background-color: #fff;
+                margin: 0;
+                padding: 0;
+                color: #000;
+            }
+
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+
+            /* Container */
+            .container {
+                max-width: 1140px;
+                margin: auto;
+                padding: 20px;
+            }
+
+            /* Grid system - simple flexbox */
+            .row {
+                display: flex;
+                flex-wrap: wrap;
+                margin-left: -10px;
+                margin-right: -10px;
+            }
+
+            .col-md-4 {
+                flex: 0 0 33.3333%;
+                padding-left: 10px;
+                padding-right: 10px;
+                box-sizing: border-box;
+            }
+
+            /* Responsive for smaller screens */
+            @media (max-width: 768px) {
+                .col-md-4 {
+                    flex: 0 0 100%;
+                    margin-bottom: 20px;
+                }
+            }
+
+            /* Hero Section */
+            .hero {
+                background: url('https://images.unsplash.com/photo-1573496529574-be85d6a60704') center/cover no-repeat;
+                padding: 100px 0;
+                color: white;
+                text-align: center;
+                border-radius: 0 0 25px 25px;
+            }
+
+            /* About Section Padding */
+            .about-section {
+                padding: 60px 0;
+            }
+
+            /* Experience Box */
+            .experience-box {
+                background-color: #2d1e1e;
+                color: white;
+                text-align: center;
+                padding: 20px;
+                border-radius: 15px;
+                font-size: 24px;
+                font-weight: bold;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 150px;
+            }
+
+            /* Highlight Card */
+            .highlight-card {
+                background-color: #faebe6;
+                border-radius: 20px;
+                padding: 30px;
+                height: 100%;
+            }
+
+            /* List inside highlight card */
+            .highlight-card ul {
+                list-style: none;
+                padding-left: 0;
+                margin: 0;
+            }
+
+            .highlight-card ul li::before {
+                content: '✔';
+                color: #a94442;
+                margin-right: 10px;
+            }
+
+            /* Rounded Images */
+            .rounded-image {
+                border-radius: 20px;
+                max-width: 100%;
+                height: auto;
+                display: block;
+            }
+
+            /* Text styles */
+            h6 {
+                letter-spacing: 1px;
+                color: #b14e4e;
+                text-transform: uppercase;
+                margin-bottom: 10px;
+            }
+
+            h2 {
+                font-weight: 700;
+                margin-bottom: 15px;
+            }
+
+            p.text-muted {
+                color: #6c757d;
+            }
+
+            /* Button style */
+            .btn-dark {
+                background-color: #000;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                display: inline-block;
+                margin-top: 15px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .btn-dark:hover {
+                background-color: #333;
+                text-decoration: none;
+                color: white;
+            }
+
+            /* Centering vertically for middle column */
+            .center-column {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                height: 100%;
+            }
+        </style>
+</head>
+
+<body>
+    <%- include("__header.ejs") %>
+
+        <div class="hero">
+            <h1>About Us</h1>
+            <p><a href="/" class="text-light">Home</a> → About</p>
+        </div>
+
+        <div class="container about-section">
+            <div class="row">
+                <!-- Left Image -->
+                <div class="col-md-4">
+                    <img src="https://i.pinimg.com/736x/ea/4b/47/ea4b474c5392b809224a060beb2a0b1c.jpg" alt="Team"
+                        class="rounded-image">
+                </div>
+
+                <!-- Center Column -->
+                <div class="col-md-4 center-column">
+                    <img src="https://i.pinimg.com/736x/c5/2f/c6/c52fc60c317de7223795f53e50edb6bf.jpg" alt="Meeting"
+                        class="rounded-image mb-3" style="margin-bottom: 1rem;">
+                    <div class="experience-box w-100">0+<br><small>Years of Experience</small></div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-md-4">
+                    <div class="highlight-card">
+                        <h6>About NoteItDown</h6>
+                        <h2>Simplified Notes Storage for Students' Success</h2>
+                        <p class="text-muted">
+                            Our Notes Storage Application is a simple, efficient, and user-friendly platform where users
+                            can securely store their notes, documents, or any important information. Whether it's for
+                            study, work, or personal use, this application offers:
+                        </p>
+                        <div class="row">
+                            <div class="col-md-6" style="padding-left: 0; padding-right: 1rem;">
+                                <ul>
+                                    <li>Safe and private storage of notes and files</li>
+                                    <li>Easy upload and access from anywhere</li>
+                                    <li>Ideal for students, professionals</li>
+                                    <li>Organized categorization</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6" style="padding-left: 1rem; padding-right: 0;">
+                                <ul>
+                                    <li>Free to Access</li>
+                                    <li>Easy Navigation</li>
+                                    <li>Built by Students</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <a href="#" class="btn-dark">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%- include("footer.ejs") %>
+            <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
+
+</body>
+
+</html>
