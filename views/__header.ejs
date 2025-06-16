@@ -19,9 +19,10 @@
         letter-spacing: 3px;
     }
 
+
     .dropdown-menu {
         border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .dropdown-toggle::after {
@@ -30,7 +31,16 @@
 </style>
 
 <nav class="navbar navbar-expand-sm bg-light navbar-light border-bottom border-dark">
-    <a class="navbar-brand font-weight-bold" href="/" style="font-size: 30px;" id="logo">NoteItDown</a>
+
+    <a class="navbar-brand font-weight-bold" href="/" style="font-size: 30px; margin-left: 10px;" id="logo">
+        <span style="color: #FF6B6B; letter-spacing: 2px;">Note</span><span
+            style="color: #4ECDC4; letter-spacing: 2px">It</span><span
+            style="color: #1A535C; letter-spacing: 2px">Down</span>
+    </a>
+
+
+    <!-- <a class="navbar-brand font-weight-bold" href="/" style="font-size: 30px;" id="logo">NoteItDown</a> -->
+
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
         aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,25 +76,26 @@
                         <a class="dropdown-item" href="/account">Account</a>
                     </div>
                 </li>
-            <% } else { %>
-                <!-- Before Login Navbar -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/aboutUs" style="color:black;" id="navsma">About Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/contactUs" style="color:black;" id="navsma">Contact Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/register" style="color:green; font-weight: bold;" id="navsma">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/log-in" style="color:green; font-weight: bold;" id="navsma">Login</a>
-                </li>
-            <% } %>
+                <% } else { %>
+                    <!-- Before Login Navbar -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/aboutUs" style="color:black;" id="navsma">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contactUs" style="color:black;" id="navsma">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register" style="color:green; font-weight: bold;"
+                            id="navsma">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/log-in" style="color:green; font-weight: bold;" id="navsma">Login</a>
+                    </li>
+                    <% } %>
 
-            <li class="nav-item">
-                <button id="btn" onclick="toggleDarkMode()" class="mt-2 mt-sm-0">Dark Mode</button>
-            </li>
+                        <li class="nav-item">
+                            <button id="btn" onclick="toggleDarkMode()" class="mt-2 mt-sm-0">Dark Mode</button>
+                        </li>
         </ul>
     </div>
 </nav>

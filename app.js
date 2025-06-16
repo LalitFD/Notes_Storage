@@ -4,7 +4,6 @@ import authRoutes from './routes/auth.routes.js';
 import session from 'express-session';
 import notesRoutes from './routes/notes.routes.js';
 import userRoutes from './routes/notes.routes.js';
-// import path from path
 
 const app = express();
 
