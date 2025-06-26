@@ -18,25 +18,17 @@ const pool = mysql.createPool({
     database: process.env.DB_NAME,
     port: process.env.DB_PORT || 3306,
     
-    // Timeout settings bahut zyada increase karo
-    acquireTimeout: 120000,     // 2 minutes
-    timeout: 120000,            // 2 minutes
-    connectTimeout: 120000,     // 2 minutes
+    // Correct MySQL2 options
+    connectTimeout: 60000,          // Connection timeout (60 seconds)
+    acquireTimeout: 60000,          // Pool acquire timeout (60 seconds)
+    waitForConnections: true,       // Wait for available connection
+    connectionLimit: 10,            // Max connections in pool
+    queueLimit: 0,                  // No limit on queued requests
     
-    // Connection pool minimal rakho
-    connectionLimit: 2,         // Sirf 2 connections
-    queueLimit: 0,
-    
-    // Reconnection settings
-    reconnect: true,
-    maxReconnects: 3,
-    
-    // SSL disable kar ke try karo
-    ssl: false,
-    
-    // Additional settings
-    dateStrings: true,
-    multipleStatements: false
+    // SSL settings
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
 
