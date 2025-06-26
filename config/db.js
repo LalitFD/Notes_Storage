@@ -1,11 +1,13 @@
 // config/db.js
-import mysql from 'mysql2/promise'; 
+import mysql from 'mysql2/promise';
+import dotenv from "dotenv"
+dotenv.config();
 
-const db = mysql.createPool({  
+const db = mysql.createPool({
   host: 'localhost',
-  user: 'root',
-  password: 'root', 
-  database: 'notesitdown',
+  user: process.env.user,
+  password: process.env.password,
+  database: process.env.databases,
 });
 
 async function testConnection() {

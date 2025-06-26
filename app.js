@@ -4,13 +4,15 @@ import authRoutes from './routes/auth.routes.js';
 import session from 'express-session';
 import notesRoutes from './routes/notes.routes.js';
 import userRoutes from './routes/notes.routes.js';
+import dotenv from "dotenv"
+dotenv.config()
 
 const app = express();
 
 
 
 app.use(session({
-    secret: 'gdfujsvdfyjsvgfujdv'
+    secret: process.env.secret
 }));
 
 app.use(express.urlencoded({ extended: true }));
@@ -90,7 +92,7 @@ app.get('/account', (req, res) => {
 
     res.render('account', {
         user: req.session.user,
-        accountData: null 
+        accountData: null
     });
 });
 
