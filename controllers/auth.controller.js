@@ -1,72 +1,72 @@
 // controllers/auth.controller.js
-import db from '../config/db.js';
 import bcrypt from 'bcryptjs';
+import { User } from '../models/user.model.js';
 
 export const registerUser = async (req, res) => {
   try {
     const { firstname, lastname, email } = req.body;
     let { password } = req.body;
 
-    let saltKey = bcrypt.genSaltSync(12);
-    password = bcrypt.hashSync(password, saltKey);
-
-    const [user] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
-    if (user.length) {
+    // ✅ Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
       return res.status(400).render('register', {
         error: 'Email already registered'
       });
     }
 
-    await db.query(
-      'INSERT INTO users (firstname, lastname, email, password) VALUES (?, ?, ?, ?)',
-      [firstname, lastname, email, password]
-    );
+    // ✅ Hash password
+    const saltKey = bcrypt.genSaltSync(12);
+    const hashedPassword = bcrypt.hashSync(password, saltKey);
 
-    res.redirect('/login?success=registered');
+    // ✅ Save new user
+    await User.create({
+      firstname,
+      lastname,
+      email,
+      password: hashedPassword
+    });
+
+    res.redirect('/log-in?success=registered');
   } catch (err) {
     console.error('Registration error:', err);
-    res.status(500).render('register',{error: 'Something went wrong. Try again.'
+    res.status(500).render('register', {
+      error: 'Something went wrong. Try again.'
     });
   }
 };
 
-
-
 export const loginUser = async (req, res) => {
-  let { email, password } = req.body;
+  const { email, password } = req.body;
 
   try {
-    const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+    // ✅ Find user by email
+    const user = await User.findOne({ email });
 
-    if (!rows.length) {
+    if (!user) {
       return res.status(400).render('log-in', { error: 'Email not found' });
     }
 
-    const user = rows[0];
+    // ✅ Check password
     const passwordMatch = bcrypt.compareSync(password, user.password);
-
-    if (passwordMatch) {
-
-      req.session.user = {
-        id: user.id,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        email: user.email
-      };
-
-      return res.redirect('/indexPage');
-    } else {
+    if (!passwordMatch) {
       return res.status(400).render('log-in', { error: 'Incorrect password' });
-
     }
 
-  } catch (e) {
-    console.log('Login failed:', e);
-    return res.status(500).render('log-in', { error: 'Something went wrong' });
+    // ✅ Store user in session
+    req.session.user = {
+      id: user._id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email
+    };
+
+    res.redirect('/indexPage');
+  } catch (err) {
+    console.error('Login failed:', err);
+    res.status(500).render('log-in', { error: 'Something went wrong' });
   }
 };
-
-
 
 export const logoutUser = (req, res) => {
   req.session.destroy((err) => {

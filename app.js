@@ -1,125 +1,128 @@
 import express from "express";
-import bodyParser from 'body-parser';
-import session from 'express-session';
-import { createRequire } from 'module';
+import session from "express-session";
 import dotenv from "dotenv";
-import authRoutes from './routes/auth.routes.js';
-import notesRoutes from './routes/notes.routes.js';
+import bodyParser from "body-parser";
+import path from "path";
+import { fileURLToPath } from "url";
+import MongoStore from "connect-mongo";
+import mongoose from "mongoose";
 
+import authRoutes from "./routes/auth.routes.js";
+import notesRoutes from "./routes/notes.routes.js";
+
+// ✅ Env Config
 dotenv.config();
 
-const require = createRequire(import.meta.url);
-const MySQLStore = require('express-mysql-session')(session);
+// ✅ MongoDB Connection
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log("✅ MongoDB Atlas connected");
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err.message);
+    process.exit(1);
+  }
+};
+connectDB();
 
+// ✅ __dirname Setup
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// ✅ Express App Setup
 const app = express();
 
-
-console.log("MySQL User:", process.env.DB_USER);
-console.log("MySQL Password:", process.env.DB_PASSWORD);
-
-// ✅ MySQL Session Store Configuration
-const options = {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
-};
-
-const sessionStore = new MySQLStore(options);
-
-// ✅ Session Middleware
+// ✅ Session Store in MongoDB
 app.use(session({
-    key: 'user_sid',
-    secret: process.env.SECRET || 'mySecretKey',
-    store: sessionStore,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24 // 1 day
-    }
+  secret: process.env.SECRET || 'mySecretKey',
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    collectionName: "sessions",
+    ttl: 24 * 60 * 60 // 1 day
+  }),
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24
+  }
 }));
 
-// ✅ Body Parsers & Static Files
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static('public'));
-app.use('/uploads', express.static('public/uploads'));
+// ✅ View Engine & Static
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
-// ✅ View Engine
-app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, "public")));
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
-// ✅ Auth Middleware
+// ✅ Body Parsers
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// ✅ Middleware to protect routes (keep this for individual route protection)
 const requireAuth = (req, res, next) => {
-    if (!req.session.user) {
-        return res.redirect('/log-in');
-    }
-    next();
+  if (!req.session.user) {
+    return res.redirect("/log-in");
+  }
+  next();
 };
 
 // ✅ Routes
-app.use('/', authRoutes);
-app.use('/notes', notesRoutes);
+app.use("/", authRoutes);
+app.use("/notes", notesRoutes);
 
-app.get('/history', requireAuth, (req, res) => {
-    res.render('history', { user: req.session.user });
+// ✅ Individual protected routes
+app.get("/aboutUs", (req, res) => {
+  res.render("aboutUs", {
+    user: req.session.user || null
+  });
 });
 
-app.get('/account', requireAuth, (req, res) => {
-    res.render('account', {
-        user: req.session.user,
-        accountData: null
-    });
+app.get("/contactUs", (req, res) => {
+  res.render("contactUs", {
+    user: req.session.user || null
+  });
 });
 
-app.get('/aboutUs', (req, res) => {
-    res.render('aboutUs', {
-        user: req.session.user || null
-    });
+app.get("/register", (req, res) => {
+  if (req.session.user) {
+    return res.redirect("/indexPage");
+  }
+  res.render("register", { user: null });
 });
 
-app.get('/contactUs', (req, res) => {
-    res.render('contactUs', {
-        user: req.session.user || null
-    });
+app.get("/log-in", (req, res) => {
+  if (req.session.user) {
+    return res.redirect("/indexPage");
+  }
+  res.render("log-in", {
+    user: null,
+    success: req.query.success
+  });
 });
 
-app.get('/register', (req, res) => {
-    if (req.session.user) {
-        return res.redirect('/indexPage');
-    }
-    res.render('register', { user: null });
-});
-
-app.get('/log-in', (req, res) => {
-    if (req.session.user) {
-        return res.redirect('/indexPage');
-    }
-    res.render('log-in', {
-        user: null,
-        success: req.query.success
-    });
-});
-
-app.get('/logout', (req, res) => {
-    req.session.destroy(err => {
-        res.redirect('/');
-    });
-});
-
-// ✅ Error Handling
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something went wrong!');
+app.get("/logout", (req, res) => {
+  req.session.destroy(err => {
+    res.redirect("/");
+  });
 });
 
 // ✅ 404 Handler
 app.use((req, res) => {
-    console.log('404 - Route not found:', req.url);
-    res.status(404).send('Route not found: ' + req.url);
+  console.log("❌ 404 - Route not found:", req.url);
+  res.status(404).send("Route not found: " + req.url);
+});
+
+// ✅ Global Error Handler
+app.use((err, req, res, next) => {
+  console.error("❌ Server Error:", err.stack);
+  res.status(500).send("Something went wrong!");
 });
 
 // ✅ Start Server
-const PORT = process.env.DB_PORT || 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`🚀 Server started on port ${PORT}`);
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
